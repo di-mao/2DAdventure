@@ -1,0 +1,18 @@
+/[Ll]ibrary/
+/[Ll]ogs/
+/[Oo]bj/
+/[Tt]emp/
+/[Uu]serSettings/
+/[Bb]uild/
+/[Bb]uilds/
+
+# 排除 Rider 和 VS 生成的配置文件
+.idea/
+.vs/
+*.sln
+*.csproj
+*.unityproj
+
+# 排除系统产生的无用文件
+.DS_Store
+Thumbs.db
