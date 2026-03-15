@@ -8,19 +8,25 @@ public class Character : MonoBehaviour
     [Header("基本属性")]
     public float maxHealth;
     public float currentHealth;
+    public float maxPower;
+    public float currentPower;
+    public float powerRecoverSpeed;
 
     [Header("受击无敌")]
     public float invulnerableDuration;
     public float invulnerableCounter;
     public bool isInvulnerable;
-    
+
     [Header("受伤事件")]
     public UnityEvent<Transform> OnTakeDamage;
     public UnityEvent OnDie;
+    [Header("改变血量")]
+    public UnityEvent<Character> OnHealthChange;
 
     private void Start()
     {
         currentHealth = maxHealth;
+        OnHealthChange?.Invoke(this);
     }
 
     private void Update()
@@ -34,6 +40,11 @@ public class Character : MonoBehaviour
             {
                 isInvulnerable = false;
             }
+        }
+
+        if (currentPower < maxPower)
+        {
+            currentPower += Time.deltaTime * powerRecoverSpeed;
         }
     }
 
@@ -54,7 +65,7 @@ public class Character : MonoBehaviour
             // 触发死亡
             OnDie?.Invoke();
         }
-        
+        OnHealthChange?.Invoke(this); // 激活血量发生了改变的事件
     }
     
     private void TriggerInvulnerable()
@@ -64,5 +75,11 @@ public class Character : MonoBehaviour
             isInvulnerable = true;
             invulnerableCounter = invulnerableDuration;
         }
+    }
+
+    public void OnSlide(int cost)
+    {
+        currentPower -= cost;
+        OnHealthChange?.Invoke(this);
     }
 }
