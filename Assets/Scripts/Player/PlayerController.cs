@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private PhysicsCheck physicsCheck;
     private CapsuleCollider2D capsuleCollider;
     private PlayerAnimation playerAnimation;
+    private Character character;
 
     public bool isCrouch;
 
@@ -19,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float slideSpeed;
     public float slideDistance;
-    public float slidePowerCost;
+    public int slidePowerCost;
     private float runSpeed;
     private float walkSpeed => speed / 2.5f; // 每次调用 walkSpeed 都会执行一次 Lambda 表达式
     public float jumpForce;
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
         physicsCheck = GetComponent<PhysicsCheck>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         playerAnimation = GetComponent<PlayerAnimation>();
+        character = GetComponent<Character>();
 
         // 记录碰撞体大小
         originalOffset = capsuleCollider.offset;
@@ -153,12 +155,13 @@ public class PlayerController : MonoBehaviour
     
     private void Slide(InputAction.CallbackContext obj)
     {
-        if (!isSlide && !physicsCheck.isGrounded)
+        if (!isSlide && physicsCheck.isGrounded && character.currentPower >= slidePowerCost)
         {
             isSlide = true;
             gameObject.layer = LayerMask.NameToLayer("Enemy");
             var targetPos = new Vector3(transform.position.x + slideDistance * transform.localScale.x, transform.position.y);
             StartCoroutine(TriggerSlide(targetPos));
+            character.OnSlide(slidePowerCost);
         }
     }
 

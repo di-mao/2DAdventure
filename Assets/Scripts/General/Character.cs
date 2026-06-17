@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+        currentPower = maxPower;
         OnHealthChange?.Invoke(this);
     }
 

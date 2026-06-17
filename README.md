@@ -1,6 +1,5 @@
 # 2D横版冒险RPG Demo
 
-![游戏截图](./screenshots/gameplay.png) <!-- 假设你有图 -->
 
 ## 项目简介
 **跟随Unity中文课堂M_Studio老师的课程制作**
